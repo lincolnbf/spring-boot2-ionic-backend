@@ -11,6 +11,7 @@ import com.lincolnbf.cursomc.domain.ItemPedido;
 import com.lincolnbf.cursomc.domain.PagamentoComBoleto;
 import com.lincolnbf.cursomc.domain.Pedido;
 import com.lincolnbf.cursomc.domain.enums.EstadoPagamento;
+import com.lincolnbf.cursomc.repositories.ClienteRepository;
 import com.lincolnbf.cursomc.repositories.ItemPedidoRepository;
 import com.lincolnbf.cursomc.repositories.PagamentoRepository;
 import com.lincolnbf.cursomc.repositories.PedidoRepository;
@@ -36,6 +37,9 @@ public class PedidoService {
 	private ProdutoService produtoService;
 	
 	@Autowired
+	private ClienteService clienteService;
+	
+	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 
 	public Pedido find(Integer id) {
@@ -48,6 +52,7 @@ public class PedidoService {
 	public Pedido insert(Pedido obj) {
 		 obj.setId(null);
 		 obj.setInstante(new Date());
+		 obj.setCliente(clienteService.find(obj.getCliente().getId()));
 		 obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		 obj.getPagamento().setPedido(obj);
 		 if (obj.getPagamento() instanceof PagamentoComBoleto) {
@@ -64,6 +69,7 @@ public class PedidoService {
 			 ip.setPedido(obj);
 		 }		 
 		 itemPedidoRepository.saveAll(obj.getItens());
+		 System.out.println(obj);
 		 return obj;
 	}
 }
