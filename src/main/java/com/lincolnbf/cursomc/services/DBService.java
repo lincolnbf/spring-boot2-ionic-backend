@@ -20,6 +20,7 @@ import com.lincolnbf.cursomc.domain.PagamentoComCartao;
 import com.lincolnbf.cursomc.domain.Pedido;
 import com.lincolnbf.cursomc.domain.Produto;
 import com.lincolnbf.cursomc.domain.enums.EstadoPagamento;
+import com.lincolnbf.cursomc.domain.enums.Perfil;
 import com.lincolnbf.cursomc.domain.enums.TipoCliente;
 import com.lincolnbf.cursomc.repositories.CategoriaRepository;
 import com.lincolnbf.cursomc.repositories.CidadeRepository;
@@ -122,16 +123,23 @@ public class DBService {
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
 		Cliente cli1 = new Cliente(null, "Maria Silva", "lincolnbf@gmail.com", "13158722690", TipoCliente.PESSOAFISICA, pe.encode("123"));
+		
 		cli1.getTelefones().addAll(Arrays.asList("32410133", "999827700"));
-
-		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38500-000", cli1, c1);
-		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38440-122", cli1, c2);
+		
+		Cliente cli2 = new Cliente(null, "Ana costa", "lincolnbf1@gmail.com", "84116525057", TipoCliente.PESSOAFISICA, pe.encode("456"));
+		cli2.addPerfil(Perfil.ADMIN);
+		cli2.getTelefones().addAll(Arrays.asList("000000000", "111111111"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38500000", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38440122", cli1, c2);
+		Endereco e3 = new Endereco(null, "Avenida Floriando", "200", "", "Jardim das flores", "38500000", cli1, c2);
 
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		cli2.getEnderecos().addAll(Arrays.asList(e3));
 
-		clienteRepository.saveAll(Arrays.asList(cli1));
+		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
 
-		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
